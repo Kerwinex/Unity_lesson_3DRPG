@@ -45,8 +45,6 @@ public class ThirdPersonControll : MonoBehaviour
     private AudioSource audiosource;
     private Rigidbody rgbody;
     private Animator anitor;
-
-
     #endregion
 
     #region Unity 資料類型
@@ -133,34 +131,77 @@ public class ThirdPersonControll : MonoBehaviour
         print("ahoy!!我是自訂方法爹斯~~");
     }
 
-    private int jump()
+    private int jumpp()
     {
         return 999;
     }
+    //參數語法：資料類型 參數名稱 指定預設值
+    //有預設值不用輸入引述，選填式參數
+    //選填式參數只能放在()裡右邊
 
-    private void skill(int dmg)
+    private void skill(int dmg, string effect = "灰塵特效",string sound = "嘎嘎嘎")
     {
         print("有參數-傷害值：" + dmg);
-        print("有參數-技能特效Explotion!!");
+        print("有參數-技能特效：" + effect);
+        print("有參數-技能音效：" + sound);
     }
 
-    private void skill100()
+    //summary非必要到很重要
+    /// <summary>
+    /// 計算BMI
+    /// </summary>
+    /// <param name="weight">體重，單位為kg</param>
+    /// <param name="height">身高，單位為m</param>
+    /// <param name="name">名字</param>
+    /// <returns></returns>
+    private float BMI(float weight, float height, string name = "TEST")
     {
-        print("有參數-傷害值：" + 100);
-        print("有參數-技能特效Explotion!!");
+        print(name + "的BMI");
+        return weight / (height * height);
+    }    
+    
+    
+    private void move(float speed)
+    {
+
     }
 
-    private void skill150()
+    /// <summary>
+    /// 移動按鍵輸入
+    /// </summary>
+    /// <returns>移動按鍵值</returns>
+    private float movekey()
     {
-        print("有參數-傷害值：" + 150);
-        print("有參數-技能特效Explotion!!");
+        
+        return 0;
     }
 
-    private void skill200()
+    /// <summary>
+    /// 地板檢查
+    /// </summary>
+    /// <returns>檢查結果</returns>
+    private bool gnd_chk()
     {
-        print("有參數-傷害值：" + 200);
-        print("有參數-技能特效Explotion!!");
+        
+        return false;
     }
+
+    /// <summary>
+    /// 跳躍
+    /// </summary>
+    private void jump()
+    {
+        
+    }
+
+    /// <summary>
+    /// 更新動畫
+    /// </summary>
+    private void ani_re()
+    {
+
+    }
+    
     #endregion
 
 
@@ -195,16 +236,15 @@ public class ThirdPersonControll : MonoBehaviour
         print("HP：" + hp);
         */
         #endregion
-
+        print(BMI(50, 1.65f));
         test();
-        int j = jump();
+        int j = jumpp();
         print("跳躍值：" + j);
-        print("跳躍值++：" + (jump()+1));
-        skill(9999);
-        skill100();
-        skill150();
-        skill200();
-
+        print("跳躍值++：" + (jumpp()+1));
+        skill(999);
+        skill(9999, "Explotion!!");
+        skill(9999, sound:"碰碰碰!");
+       
     }
 
     private void Update()
