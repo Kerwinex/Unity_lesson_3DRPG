@@ -352,7 +352,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 2e2b93be740e97f4e854af3bb8330932, type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2e2b93be740e97f4e854af3bb8330932, type: 3}
       propertyPath: m_LocalPosition.x
@@ -422,23 +422,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10.5
-  color: {r: 0, g: 0, b: 0, a: 0}
-  white: {r: 1, g: 1, b: 1, a: 1}
-  color1: {r: 0.5, g: 0.02, b: 0.87, a: 1}
-  color2: {r: 0.64, g: 0.69, b: 0.87, a: 0.66}
-  V2: {x: 0, y: 0}
-  V2Right: {x: 1, y: 0}
-  V2up: {x: 0, y: 1}
-  V2One: {x: 1, y: 1}
-  V2c: {x: 0.5, y: 8.7}
-  key: 0
-  move: 119
-  jump: 32
-  sound: {fileID: 0}
-  video: {fileID: 0}
-  sprite: {fileID: 0}
-  texture2D: {fileID: 0}
-  material: {fileID: 0}
+  height: 100
+  ground_chk: 0
+  ground_move: {x: 0, y: 0, z: 0}
+  ground_chk_r: 0.2
+  jump_sound: {fileID: 0}
+  landing_sound: {fileID: 0}
+  walk: "\u8D70\u8DEF\u958B\u95DC"
+  run: "\u8DD1\u6B65\u958B\u95DC"
+  get_hit: "\u53D7\u50B7\u89F8\u767C"
+  death: "\u6B7B\u4EA1\u958B\u95DC"
 --- !u!1001 &816537266
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -514,7 +507,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4053294290807128, guid: 2d4486064fe15d04e8c1636577f5093f, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4053294290807128, guid: 2d4486064fe15d04e8c1636577f5093f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -729,7 +722,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4508698902390004, guid: 7d5c58feb12284541b5cc819211d2fbe, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4508698902390004, guid: 7d5c58feb12284541b5cc819211d2fbe, type: 3}
       propertyPath: m_LocalPosition.x
@@ -993,7 +986,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4195845280015418, guid: 3603a2c33fc769f42b99104b3b2c6136, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4195845280015418, guid: 3603a2c33fc769f42b99104b3b2c6136, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1301,7 +1294,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4583636595095350, guid: a2d3c4acfd6f6704caa6eb80831f5e39, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4583636595095350, guid: a2d3c4acfd6f6704caa6eb80831f5e39, type: 3}
       propertyPath: m_LocalPosition.x
