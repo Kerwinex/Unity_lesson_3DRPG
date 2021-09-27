@@ -45,6 +45,7 @@ public class ThirdPersonControll : MonoBehaviour
     private AudioSource audiosource;
     private Rigidbody rgbody;
     private Animator anitor;
+    public GameObject playerobject;
     #endregion
 
     #region Unity 資料類型
@@ -118,7 +119,6 @@ public class ThirdPersonControll : MonoBehaviour
     public KeyCode keyjump { get; }
     #endregion
 
-
     #region 方法 Method
     //定義與實作較複雜程式的區塊，功能
     //方法語法：修飾詞 回傳資料類型 方法名稱(參數1, ...參數n){}
@@ -146,7 +146,7 @@ public class ThirdPersonControll : MonoBehaviour
         print("有參數-技能音效：" + sound);
     }
 
-    //summary非必要到很重要
+    //summary非必要但很重要
     /// <summary>
     /// 計算BMI
     /// </summary>
@@ -236,6 +236,10 @@ public class ThirdPersonControll : MonoBehaviour
         print("HP：" + hp);
         */
         #endregion
+        audiosource = playerobject.GetComponent(typeof(AudioSource)) as AudioSource;
+        rgbody = gameObject.GetComponent<Rigidbody>();
+        anitor = GetComponent<Animator>();
+
         print(BMI(50, 1.65f));
         test();
         int j = jumpp();
