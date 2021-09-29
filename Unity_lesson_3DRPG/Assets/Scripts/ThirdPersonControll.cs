@@ -24,13 +24,13 @@ public class ThirdPersonControll : MonoBehaviour
     [Header("移動速度"), Tooltip("用來調整角色移動速度"), Range(1, 500)]
     public float speed = 10.5f;
     [Header("跳躍高度"), Tooltip("用來調整角色跳躍高度"), Range(0, 1000)]
-    public int height = 100;
+    public int height = 200;
 
     [Header("檢查地面資料"), Tooltip("偵測角色是否在地板上")]
     public bool ground_chk = false;
     public Vector3 ground_move;
     [Range(0, 3)]
-    public float ground_chk_r = 0.2f;
+    public float ground_chk_r = 0.1f;
 
     [Header("音效檔案")]
     public AudioClip jump_sound;
@@ -41,6 +41,8 @@ public class ThirdPersonControll : MonoBehaviour
     public string run = "跑步開關";
     public string get_hit = "受傷觸發";
     public string death = "死亡開關";
+    public string anijump = "跳躍觸發";
+    public string anigndchk = "是否在地板上";
 
     private AudioSource audiosource;
     private Rigidbody rgbody;
@@ -92,27 +94,17 @@ public class ThirdPersonControll : MonoBehaviour
     //屬性語法:修飾詞 資料類型 屬性名稱{取; 存;}
     public int readandwrite { get; set; }
     //唯獨屬性：只能取得 get
-    public int read { get;}
+    public int read { get; }
     public int readvalue //唯獨屬性設值
     {
-        get 
-        {
-            return 88;
-        } 
+        get { return 88; } 
     }
     //唯寫屬性：禁止
     private int _hp;
     public int hp 
     { 
-        get 
-        {
-            return _hp;
-        }
-
-        set 
-        {
-            _hp = value;        
-        } 
+        get{ return _hp; }
+        set{ _hp = value; } 
     }
     */
 
@@ -126,15 +118,7 @@ public class ThirdPersonControll : MonoBehaviour
     //排版格式化：Ctrl+KD
     //自訂方法名稱為淡黃色(深色介面)，淺灰色(淺色介面)-沒有被呼叫
     //自訂方法名稱為亮黃色(深色介面)，棕色(淺色介面)-有被呼叫
-    private void test()
-    {
-        print("ahoy!!我是自訂方法爹斯~~");
-    }
-
-    private int jumpp()
-    {
-        return 999;
-    }
+        private int jumpp() { return 999; }
     //參數語法：資料類型 參數名稱 指定預設值
     //有預設值不用輸入引述，選填式參數
     //選填式參數只能放在()裡右邊
@@ -146,34 +130,25 @@ public class ThirdPersonControll : MonoBehaviour
         print("有參數-技能音效：" + sound);
     }
 
-    //summary非必要但很重要
     /// <summary>
-    /// 計算BMI
+    /// 移動
     /// </summary>
-    /// <param name="weight">體重，單位為kg</param>
-    /// <param name="height">身高，單位為m</param>
-    /// <param name="name">名字</param>
-    /// <returns></returns>
-    private float BMI(float weight, float height, string name = "TEST")
-    {
-        print(name + "的BMI");
-        return weight / (height * height);
-    }    
-    
-    
+    /// <param name="speed"></param>
     private void move(float speed)
     {
-
+        rgbody.velocity = 
+            Vector3.forward * movekey("Vertical") * speed + //前後速度(0,0,1)
+            Vector3.right * movekey("Horizontal") * speed + //左右速度(1,0,0)
+            Vector3.up * rgbody.velocity.y; //加回原有的y軸加速度(重力)
     }
 
     /// <summary>
     /// 移動按鍵輸入
     /// </summary>
     /// <returns>移動按鍵值</returns>
-    private float movekey()
-    {
-        
-        return 0;
+    private float movekey(string axisname)
+    {        
+        return Input.GetAxis(axisname);
     }
 
     /// <summary>
@@ -182,8 +157,13 @@ public class ThirdPersonControll : MonoBehaviour
     /// <returns>檢查結果</returns>
     private bool gnd_chk()
     {
-        
-        return false;
+        Collider[] hit=Physics.OverlapSphere((transform.position +
+            transform.right * ground_move.x +
+            transform.up * ground_move.y +
+            transform.forward * ground_move.z),
+            ground_chk_r, 1<<3);
+        ground_chk = hit.Length > 0;
+        return hit.Length>0;
     }
 
     /// <summary>
@@ -191,7 +171,11 @@ public class ThirdPersonControll : MonoBehaviour
     /// </summary>
     private void jump()
     {
-        
+        //print("是否在地面上：" + gnd_chk());
+        if (gnd_chk() && Input.GetKeyDown(KeyCode.Space))        
+        {
+            rgbody.AddForce(transform.up * height);
+        }
     }
 
     /// <summary>
@@ -199,11 +183,14 @@ public class ThirdPersonControll : MonoBehaviour
     /// </summary>
     private void ani_re()
     {
-
+        //if(Input.GetKey(KeyCode.W)|Input.GetKey(KeyCode.S)) anitor.SetBool(walk, true);
+        // else anitor.SetBool(walk, false);
+       anitor.SetBool(walk, Input.GetAxis("Vertical") != 0 | Input.GetAxis("Horizontal") != 0);
+       anitor.SetBool(anigndchk, ground_chk);
+        if (Input.GetKeyDown(KeyCode.Space)) anitor.SetTrigger(anijump);
     }
     
     #endregion
-
 
     #region 事件 Event
     private void Start()
@@ -239,23 +226,39 @@ public class ThirdPersonControll : MonoBehaviour
         audiosource = playerobject.GetComponent(typeof(AudioSource)) as AudioSource;
         rgbody = gameObject.GetComponent<Rigidbody>();
         anitor = GetComponent<Animator>();
-
-        print(BMI(50, 1.65f));
-        test();
+        
         int j = jumpp();
         print("跳躍值：" + j);
         print("跳躍值++：" + (jumpp()+1));
         skill(999);
         skill(9999, "Explotion!!");
-        skill(9999, sound:"碰碰碰!");
-       
+        skill(9999, sound:"碰碰碰!");       
     }
 
     private void Update()
-    {
+    {        
+        jump();
+        ani_re();        
+    }
 
+    private void FixedUpdate()
+    {
+        move(speed);
+        
     }
     #endregion
 
-
+    //繪製圖示事件
+    //在unity editor內繪製圖示輔助開發，發布後隱藏
+    private void OnDrawGizmos()
+    {
+        //1.指定顏色
+        //2.繪製圖型
+        Gizmos.color = new Color(1, 0, 0.2f, 0.5f);
+        Gizmos.DrawSphere(transform.position + 
+            transform.right * ground_move.x + 
+            transform.up * ground_move.y + 
+            transform.forward * ground_move.z,
+            ground_chk_r);
+    }
 }

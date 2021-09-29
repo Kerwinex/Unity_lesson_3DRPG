@@ -402,6 +402,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 27a26f4241d441e4c94dce148fda36c4, type: 2}
+    - target: {fileID: 5866666021909216657, guid: 2e2b93be740e97f4e854af3bb8330932, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2e2b93be740e97f4e854af3bb8330932, type: 3}
 --- !u!1 &636535607 stripped
@@ -422,10 +426,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10.5
-  height: 100
+  height: 200
   ground_chk: 0
   ground_move: {x: 0, y: 0, z: 0}
-  ground_chk_r: 0.2
+  ground_chk_r: 0.1
   jump_sound: {fileID: 0}
   landing_sound: {fileID: 0}
   walk: "\u8D70\u8DEF\u958B\u95DC"
@@ -557,7 +561,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!1001 &816537266
 PrefabInstance:
@@ -1476,7 +1480,7 @@ GameObject:
   - component: {fileID: 1980904612}
   - component: {fileID: 1980904611}
   - component: {fileID: 1980904610}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: "\u5730\u5F62"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
