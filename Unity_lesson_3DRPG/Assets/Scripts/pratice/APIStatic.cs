@@ -19,7 +19,7 @@ public class APIStatic : MonoBehaviour
 
         int camnum = Camera.allCamerasCount;
         
-        double pi = Mathf.PI;
+        //double pi = Mathf.PI;
         Physics2D.gravity= new Vector2(0, -20);        
         Time.timeScale = 0.5f;
         print("floor去小數點：" + Mathf.Floor(9.999f));
