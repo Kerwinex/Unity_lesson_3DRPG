@@ -5,7 +5,7 @@
 
 ##包裝檔連結
 
-[第三人稱控制器](url)
+[第三人稱控制器](https://github.com/Kerwinex/Unity_lesson_3DRPG/blob/main/ThirdPersonControllerAndCamara.unitypackage)
 
 ##使用方式
 
