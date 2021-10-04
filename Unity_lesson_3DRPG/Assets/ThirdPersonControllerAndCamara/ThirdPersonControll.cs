@@ -25,9 +25,11 @@ namespace Ker
         //Tooltip 提示：滑鼠停留在欄位名稱會顯示彈出視窗
         //Range 範圍：可使用在數值資料上
         [Header("移動速度"), Tooltip("用來調整角色移動速度"), Range(1, 500)]
-        public float speed = 10.5f;
+        public float speed = 5f;
         [Header("跳躍高度"), Tooltip("用來調整角色跳躍高度"), Range(0, 1000)]
         public int height = 200;
+        [Header("面相旋轉速度"),Range(0,50)]
+        public float turnspeed = 10f;
 
         [Header("檢查地面資料"), Tooltip("偵測角色是否在地板上")]
         public bool ground_chk = false;
@@ -52,6 +54,7 @@ namespace Ker
         private Rigidbody rgbody;
         private Animator anitor;
         public GameObject playerobject;
+        private ThirdPersonCamara thirdPersonCamara;
         #endregion
 
         #region Unity 資料類型
@@ -106,7 +109,7 @@ namespace Ker
         private float rndvol { get => Random.Range(0.5f, 1.5f); }
     #endregion
 
-    #region 方法 Method
+        #region 方法 Method
     //定義與實作較複雜程式的區塊，功能
     //方法語法：修飾詞 回傳資料類型 方法名稱(參數1, ...參數n){}
     //常用回傳類型：無傳回 void -不回傳資料
@@ -117,15 +120,15 @@ namespace Ker
     //有預設值不用輸入引述，選填式參數
     //選填式參數只能放在()裡右邊
 
-    /// <summary>
-    /// 移動
-    /// </summary>
-    /// <param name="speed"></param>
-    private void move(float speed)
+        /// <summary>
+        /// 移動
+        /// </summary>
+        /// <param name="speed"></param>
+        private void move(float speed)
         {
             rgbody.velocity =
-                Vector3.forward * movekey("Vertical") * speed + //前後速度(0,0,1)
-                Vector3.right * movekey("Horizontal") * speed + //左右速度(1,0,0)
+                transform.forward * movekey("Vertical") * speed + //前後速度(0,0,1)
+                transform.right * movekey("Horizontal") * speed + //左右速度(1,0,0)
                 Vector3.up * rgbody.velocity.y; //加回原有的y軸加速度(重力)
         }
 
@@ -177,6 +180,17 @@ namespace Ker
             anitor.SetBool(anigndchk, ground_chk);
             if (Input.GetKeyDown(KeyCode.Space)) anitor.SetTrigger(anijump);
         }
+
+        /// <summary>
+        /// 人物轉向攝影機方向
+        /// </summary>
+        private void LookAtForward()
+        {
+            if (Mathf.Abs (movekey("Vertical")) > 0.1f) {
+                Quaternion angle = Quaternion.LookRotation(thirdPersonCamara.posForward - transform.position);
+                transform.rotation = Quaternion.Lerp(transform.rotation, angle, Time.deltaTime * turnspeed);
+            }           
+        }
         #endregion
 
         #region 事件 Event
@@ -185,19 +199,20 @@ namespace Ker
             aud = playerobject.GetComponent(typeof(AudioSource)) as AudioSource;
             rgbody = gameObject.GetComponent<Rigidbody>();
             anitor = GetComponent<Animator>();
+            thirdPersonCamara = FindObjectOfType<ThirdPersonCamara>();
         }
 
         private void Update()
         {
             jump();
             ani_re();
+            LookAtForward();
         }
 
         private void FixedUpdate()
         {
             move(speed);
-        }
-        #endregion
+        }        
 
         //繪製圖示事件
         //在unity editor內繪製圖示輔助開發，發布後隱藏
@@ -212,6 +227,7 @@ namespace Ker
                 transform.forward * ground_move.z,
                 ground_chk_r);
         }
+        #endregion
     }
 }
 
