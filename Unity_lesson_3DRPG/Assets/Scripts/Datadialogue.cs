@@ -8,6 +8,8 @@ namespace Ker.Dialogue
     [CreateAssetMenu(menuName = "Kerwin/對話資料", fileName = "NPC 對話資料")]
     public class Datadialogue : ScriptableObject
     {
+        [Header("NPC名稱")]
+        public string[] NPCname;
         [Header("任務前對話內容"), TextArea(2, 7)]
         public string[] beforemission;
         [Header("任務中對話內容"), TextArea(2, 7)]
