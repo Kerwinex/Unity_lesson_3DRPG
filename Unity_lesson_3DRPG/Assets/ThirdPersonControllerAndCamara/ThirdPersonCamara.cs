@@ -73,7 +73,7 @@ namespace Ker
 
         private void LimAngleXAndLimAngleZ()
         {
-            print(transform.rotation);
+            //print(transform.rotation);
             Quaternion angle = transform.rotation;
             angle.x = Mathf.Clamp(angle.x, limanglex.x, limanglex.y);
             angle.z = Mathf.Clamp(angle.z, limanglez.x, limanglez.y);
