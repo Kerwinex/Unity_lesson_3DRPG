@@ -51,6 +51,9 @@ namespace Ker.Dialogue
             if(CheckPlayer() && startDialogueKey) {
                 dialogueSystem.Dialogue(datadialogue);
             }
+            else if(!CheckPlayer()) {
+                dialogueSystem.StopDialogue();
+            }
         }
     }
 }

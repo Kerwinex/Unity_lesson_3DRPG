@@ -13,30 +13,50 @@ namespace Ker.Dialogue
         public GameObject goTriangle;
         [Header("對話間隔"), Range(0, 10)]
         public float dialogueInterval = 0.3f;
+        [Header("對話按鍵")]
+        public KeyCode dialogueKey = KeyCode.Z;
 
         public void Dialogue(Datadialogue data)
         {
+            StopAllCoroutines();
             StartCoroutine(SwitchDialogueGroup());
             StartCoroutine(ShowDialogueContent(data));
         }
 
-        private IEnumerator SwitchDialogueGroup()
+        public void StopDialogue()
         {
+            StopAllCoroutines();
+            StartCoroutine(SwitchDialogueGroup(false));
+        }
+
+        private IEnumerator SwitchDialogueGroup(bool fadeIn = true)
+        {
+            float increase = fadeIn ? 0.1f : -0.1f;
+            
             for (int i = 0; i < 10; i++) {
-                groupDialogue.alpha += 0.1f;
+                groupDialogue.alpha += increase;
                 yield return new WaitForSeconds(0.03f);
             }
         }
 
         private IEnumerator ShowDialogueContent(Datadialogue data)
         {
-            textContext.text = "";
-            textname.text = data.NPCname[0];
+            textContext.text = "";            
+            textname.text = "";
+            textname.text = data.NPCname;
+            goTriangle.SetActive(false);
 
-            for (int i = 0; i < data.beforemission[0].Length; i++) {
-                textContext.text += data.beforemission[0][i];
-                yield return new WaitForSeconds(dialogueInterval);
+            for (int j = 0; j < data.beforemission.Length; j++) {
+                textContext.text = "";
+
+                for (int i = 0; i < data.beforemission[j].Length; i++) {
+                    textContext.text += data.beforemission[j][i];
+                    yield return new WaitForSeconds(dialogueInterval);
+                }
+                goTriangle.SetActive(true);
+                while (!Input.GetKeyDown(dialogueKey)) yield return null;
             }
+            StartCoroutine(SwitchDialogueGroup(false));
         }
     }
 }

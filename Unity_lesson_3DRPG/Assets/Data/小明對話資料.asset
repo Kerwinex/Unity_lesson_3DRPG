@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d4939a90846c31458af3c8aff5515b6, type: 3}
+  m_Name: "\u5C0F\u660E\u5C0D\u8A71\u8CC7\u6599"
+  m_EditorClassIdentifier: 
+  NPCname: "\u5C0F\u660E"
+  beforemission:
+  - "\u4F60\u597D\u554A!\u8981\u4F86\u4E00\u5834\u6606\u7279\u724C\u55CE?"
+  - "\u597D\u6606\u7279\uFF0C\u4E0D\u6253\u55CE?"
+  missioning: []
+  aftermission:
+  - 88!
+  countNeed: 0
+  stateNPCmission: 0

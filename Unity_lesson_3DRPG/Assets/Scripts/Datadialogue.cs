@@ -9,7 +9,7 @@ namespace Ker.Dialogue
     public class Datadialogue : ScriptableObject
     {
         [Header("NPC名稱")]
-        public string[] NPCname;
+        public string NPCname;
         [Header("任務前對話內容"), TextArea(2, 7)]
         public string[] beforemission;
         [Header("任務中對話內容"), TextArea(2, 7)]
