@@ -16,9 +16,10 @@ namespace Ker
         [Header("動畫參數：受傷與死亡")]
         public string parameterHurt = "受傷觸發";
         public string parameterDead = "死亡開關";
+        
+        private Animator ani;
 
         protected float hpMax;
-        private Animator ani;        
 
         private void Awake()
         {
@@ -26,13 +27,17 @@ namespace Ker
             hpMax = hp;
         }
 
-        public virtual void Hurt(float dmg)
+        public virtual bool Hurt(float dmg)
         {
-            if (ani.GetBool(parameterDead)) return;
+            if (ani.GetBool(parameterDead)) return true;
             hp -= dmg;
             ani.SetTrigger(parameterHurt);
             onHurt.Invoke();
-            if (hp <= 0) Dead();
+            if (hp <= 0) {
+                Dead();
+                return true;
+            }
+            else return false;            
         }
 
         public void Dead()

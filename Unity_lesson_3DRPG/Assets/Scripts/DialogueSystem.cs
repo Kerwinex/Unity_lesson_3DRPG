@@ -41,16 +41,18 @@ namespace Ker.Dialogue
 
         private IEnumerator ShowDialogueContent(Datadialogue data)
         {
+            string[] dialogueContents = data.beforemission;
+            
             textContext.text = "";            
             textname.text = "";
             textname.text = data.NPCname;
             goTriangle.SetActive(false);
 
-            for (int j = 0; j < data.beforemission.Length; j++) {
+            for (int j = 0; j < dialogueContents.Length; j++) {
                 textContext.text = "";
 
-                for (int i = 0; i < data.beforemission[j].Length; i++) {
-                    textContext.text += data.beforemission[j][i];
+                for (int i = 0; i < dialogueContents[j].Length; i++) {
+                    textContext.text += dialogueContents[j][i];
                     yield return new WaitForSeconds(dialogueInterval);
                 }
                 goTriangle.SetActive(true);

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Ker.Dialogue;
 
 namespace Ker.Enemy
 {
@@ -19,7 +20,12 @@ namespace Ker.Enemy
         [Header("等待隨機秒數")]
         public Vector2 v2RandomWait = new Vector2(1, 5);
         [Header("走路隨機秒數")]
-        public Vector2 v2RandomWalk = new Vector2(3, 7);        
+        public Vector2 v2RandomWalk = new Vector2(3, 7);  
+        [Header("NPC 名稱")]
+        public string nameNPC = "NPC 1號";
+
+        private NPC npc;
+        private HurtSys hurtSys;
 
         [SerializeField]
         private StateEnemy state;       
@@ -59,8 +65,7 @@ namespace Ker.Enemy
                 transform.up * v3AttackOffset.y +
                 transform.forward * v3AttackOffset.z,
                 transform.rotation, transform.localScale);
-            Gizmos.DrawCube(Vector3.zero, v3AttackSize);
-            
+            Gizmos.DrawCube(Vector3.zero, v3AttackSize);            
         }
 
         private void Awake()
@@ -69,6 +74,10 @@ namespace Ker.Enemy
             nma = GetComponent<NavMeshAgent>();
             nma.speed = speed;
             traPlayer = GameObject.Find(namePlayer).transform;
+            
+            hurtSys = GetComponent<HurtSys>();
+            npc = GameObject.Find(nameNPC).GetComponent<NPC>();
+            hurtSys.onDead.AddListener(npc.UpdateMissionCount);
             nma.SetDestination(transform.position);
         }
         private void Update()
@@ -101,7 +110,7 @@ namespace Ker.Enemy
         }
         private void Idle()
         {
-            if (playerInTrackRange) { state = StateEnemy.Track; }
+            if (!targetIsDead && playerInTrackRange) { state = StateEnemy.Track; }
             if (isIdle) return;
             isIdle = true;
             print("等待");
@@ -118,7 +127,7 @@ namespace Ker.Enemy
 
         private void Walk()
         {
-            if (playerInTrackRange) { state = StateEnemy.Track; }
+            if (!targetIsDead && playerInTrackRange) { state = StateEnemy.Track; }
             nma.SetDestination(v3RandomWalkFinal);     
             ani.SetBool(parameterIdleWalk, nma.remainingDistance > 0.1f);
 
@@ -153,9 +162,10 @@ namespace Ker.Enemy
         [Header("攻擊時間"), Range(0, 5)]
         public float timeAttack=2.5f;
         [Header("攻擊傷害延遲時間"), Range(0, 5)]
-        public float DamageDelay = 0.5f;
+        public float damageDelay = 0.5f;
         private string parameterAttack = "攻擊觸發";
         private bool isAttack;
+        private bool targetIsDead;
         
         private void Attack()
         {
@@ -172,7 +182,7 @@ namespace Ker.Enemy
         }
         private IEnumerator DelatSendDamgeToTarget()
         {
-            yield return new WaitForSeconds(DamageDelay);
+            yield return new WaitForSeconds(damageDelay);
             Collider[] hits = Physics.OverlapBox(
                 transform.position +
                 transform.right * v3AttackOffset.x +
@@ -182,24 +192,33 @@ namespace Ker.Enemy
 
             if (hits.Length > 0) {
                 print("攻擊到的物件：" + hits[0].name);
-                hits[0].GetComponent<HurtSys>().Hurt(attack);
-            }            
+                targetIsDead = hits[0].GetComponent<HurtSys>().Hurt(attack);
+            }
+            if (targetIsDead) TargetDead();
 
-            float wiatToNextAttack = timeAttack - DamageDelay;
+            float wiatToNextAttack = timeAttack - damageDelay;
             yield return new WaitForSeconds(wiatToNextAttack);
             isAttack = false;
         }
 
+        private void TargetDead()
+        {
+            state = StateEnemy.Walk;
+            isIdle = false;
+            isWalk = false;
+            nma.isStopped = false;
+        }
 
         [Header("面向玩家速度")]
         public float speedLookAt = 10;
 
-        public void LookAtPlayer()
+        private void LookAtPlayer()
         {
             Quaternion angle = Quaternion.LookRotation(traPlayer.position - transform.position);
             transform.rotation = Quaternion.Lerp(transform.rotation, angle, Time.deltaTime * speedLookAt);
-            ani.SetBool(parameterIdleWalk, transform.rotation != angle);
-            
+            ani.SetBool(parameterIdleWalk, transform.rotation != angle);            
         }
+
+
     }
 }

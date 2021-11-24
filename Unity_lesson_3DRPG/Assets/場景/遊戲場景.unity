@@ -469,6 +469,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: "\u72D7\u52FE\u9A0E\u58EB"
       objectReference: {fileID: 0}
+    - target: {fileID: 8422892626600285392, guid: 214e08cd5e5d74c458e2a81b7ec2c84c, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 214e08cd5e5d74c458e2a81b7ec2c84c, type: 3}
 --- !u!1 &386234090
@@ -1225,7 +1229,12 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &636535612
+--- !u!4 &636535613 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 2e2b93be740e97f4e854af3bb8330932, type: 3}
+  m_PrefabInstance: {fileID: 636535606}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &636535614
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1234,7 +1243,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 636535607}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35b5d3df505ea534f8ec825417c12694, type: 3}
+  m_Script: {fileID: 11500000, guid: 2024b6eb25d0c8f4f8cce18ed8273e28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   hp: 100
@@ -1256,13 +1265,39 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 636535615}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   parameterHurt: "\u53D7\u50B7\u89F8\u767C"
   parameterDead: "\u6B7B\u4EA1\u958B\u95DC"
---- !u!4 &636535613 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 2e2b93be740e97f4e854af3bb8330932, type: 3}
-  m_PrefabInstance: {fileID: 636535606}
+  imgHp: {fileID: 447198440}
+--- !u!114 &636535615
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 636535607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27f72703400355f4d83dbbb4898246d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attack: 46
+  timeAttack: 1.3
+  damageDelay: 0.2
+  v3AttackOffset: {x: 0, y: 0.9, z: 0.88}
+  v3AttackSize: {x: 1.5, y: 1.8, z: 1.4}
+  parameterAttack: "\u653B\u64CA\u5716\u5C64\u89F8\u767C"
 --- !u!1001 &816537266
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5168,16 +5203,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 2
-  attack: 35
+  attack: 25
   rangeAttack: 2
   rangeTrack: 10
   v2RandomWait: {x: 1, y: 5}
   v2RandomWalk: {x: 3, y: 7}
+  nameNPC: "NPC 1\u865F"
   state: 0
   v3AttackOffset: {x: 0, y: 0.74, z: 0.94}
   v3AttackSize: {x: 1.33, y: 1.44, z: 1}
   timeAttack: 2.5
-  DamageDelay: 0.5
+  damageDelay: 0.5
   speedLookAt: 10
 --- !u!195 &2035618530
 NavMeshAgent:
@@ -5231,6 +5267,39 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &2035618535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2035618528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35b5d3df505ea534f8ec825417c12694, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hp: 100
+  onHurt:
+    m_PersistentCalls:
+      m_Calls: []
+  onDead:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2035618529}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  parameterHurt: "\u53D7\u50B7\u89F8\u767C"
+  parameterDead: "\u6B7B\u4EA1\u958B\u95DC"
 --- !u!1 &2065137079
 GameObject:
   m_ObjectHideFlags: 0

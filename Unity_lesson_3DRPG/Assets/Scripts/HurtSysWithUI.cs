@@ -11,11 +11,12 @@ namespace Ker
         public Image imgHp;
         private float hpEffectOriginal;
 
-        public override void Hurt(float dmg)
+        public override bool Hurt(float dmg)
         {
             hpEffectOriginal = hp;
             base.Hurt(dmg);
-            StartCoroutine(HpBarEffect());           
+            StartCoroutine(HpBarEffect());
+            return hp <= 0;
         }
 
         private IEnumerator HpBarEffect()

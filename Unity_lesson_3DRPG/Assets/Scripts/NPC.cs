@@ -15,10 +15,11 @@ namespace Ker.Dialogue
         [Header("對話系統")]
         public DialogueSystem dialogueSystem;
 
+        private int countCurrent;
         private Transform target;
         public bool startDialogueKey { get => Input.GetKeyDown(KeyCode.E); }
 
-        public void OnDrawGizmos()
+        private void OnDrawGizmos()
         {
             Gizmos.color = new Color(0, 1, 0.2f, 0.3f);
             Gizmos.DrawSphere(transform.position, checkPlayerRadius);
@@ -54,6 +55,12 @@ namespace Ker.Dialogue
             else if(!CheckPlayer()) {
                 dialogueSystem.StopDialogue();
             }
+        }
+
+        public void UpdateMissionCount()
+        {
+            countCurrent++;
+            if (countCurrent == datadialogue.countNeed) datadialogue.stateNPCmission = StateNPCMission.AfterMission;
         }
     }
 }
