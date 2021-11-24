@@ -65,8 +65,9 @@ namespace Ker.Enemy
 
         private void Awake()
         {
-            ani = GetComponent<Animator>();
+            ani = GetComponent<Animator>();            
             nma = GetComponent<NavMeshAgent>();
+            nma.speed = speed;
             traPlayer = GameObject.Find(namePlayer).transform;
             nma.SetDestination(transform.position);
         }
@@ -148,10 +149,12 @@ namespace Ker.Enemy
             ani.SetBool(parameterIdleWalk, true);
             if (nma.remainingDistance <= rangeAttack) { state = StateEnemy.Attack; }
         }
-
-        private string parameterAttack = "攻擊觸發";
+        
         [Header("攻擊時間"), Range(0, 5)]
         public float timeAttack=2.5f;
+        [Header("攻擊傷害延遲時間"), Range(0, 5)]
+        public float DamageDelay = 0.5f;
+        private string parameterAttack = "攻擊觸發";
         private bool isAttack;
         
         private void Attack()
@@ -159,11 +162,17 @@ namespace Ker.Enemy
             nma.isStopped = true;
             ani.SetBool(parameterIdleWalk, false);
             nma.SetDestination(traPlayer.position);
+            LookAtPlayer();
             if (nma.remainingDistance > rangeAttack) state = StateEnemy.Track;
 
-            if (isAttack) return;            
-
+            if (isAttack) return;
+            isAttack = true;
             ani.SetTrigger(parameterAttack);
+            StartCoroutine(DelatSendDamgeToTarget());            
+        }
+        private IEnumerator DelatSendDamgeToTarget()
+        {
+            yield return new WaitForSeconds(DamageDelay);
             Collider[] hits = Physics.OverlapBox(
                 transform.position +
                 transform.right * v3AttackOffset.x +
@@ -171,9 +180,26 @@ namespace Ker.Enemy
                 transform.forward * v3AttackOffset.z,
                 v3AttackSize / 2, Quaternion.identity, 1 << 6);
 
-            if (hits.Length > 0) print("攻擊到的物件：" + hits[0].name);
-            isAttack = true;
+            if (hits.Length > 0) {
+                print("攻擊到的物件：" + hits[0].name);
+                hits[0].GetComponent<HurtSys>().Hurt(attack);
+            }            
+
+            float wiatToNextAttack = timeAttack - DamageDelay;
+            yield return new WaitForSeconds(wiatToNextAttack);
+            isAttack = false;
+        }
+
+
+        [Header("面向玩家速度")]
+        public float speedLookAt = 10;
+
+        public void LookAtPlayer()
+        {
+            Quaternion angle = Quaternion.LookRotation(traPlayer.position - transform.position);
+            transform.rotation = Quaternion.Lerp(transform.rotation, angle, Time.deltaTime * speedLookAt);
+            ani.SetBool(parameterIdleWalk, transform.rotation != angle);
+            
         }
     }
-
 }
