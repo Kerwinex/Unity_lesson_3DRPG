@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 namespace Ker.Dialogue
 {
@@ -15,6 +16,8 @@ namespace Ker.Dialogue
         public float dialogueInterval = 0.3f;
         [Header("對話按鍵")]
         public KeyCode dialogueKey = KeyCode.Z;
+        [Header("打字事件")]
+        public UnityEvent onType;
 
         public void Dialogue(Datadialogue data)
         {
@@ -41,17 +44,29 @@ namespace Ker.Dialogue
 
         private IEnumerator ShowDialogueContent(Datadialogue data)
         {
-            string[] dialogueContents = data.beforemission;
-            
-            textContext.text = "";            
             textname.text = "";
             textname.text = data.NPCname;
-            goTriangle.SetActive(false);
+
+            string[] dialogueContents = { };
+
+            switch (data.stateNPCmission) {
+                case StateNPCMission.BeforeMission:
+                    dialogueContents = data.beforemission;
+                    break;
+                case StateNPCMission.Missioning:
+                    dialogueContents = data.missioning;
+                    break;
+                case StateNPCMission.AfterMission:
+                    dialogueContents = data.aftermission;
+                    break;                
+            }
 
             for (int j = 0; j < dialogueContents.Length; j++) {
                 textContext.text = "";
+                goTriangle.SetActive(false);
 
                 for (int i = 0; i < dialogueContents[j].Length; i++) {
+                    onType.Invoke();
                     textContext.text += dialogueContents[j][i];
                     yield return new WaitForSeconds(dialogueInterval);
                 }

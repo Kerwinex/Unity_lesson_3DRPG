@@ -16,8 +16,10 @@ MonoBehaviour:
   beforemission:
   - "\u4F60\u597D\u554A!\u8981\u4F86\u4E00\u5834\u6606\u7279\u724C\u55CE?"
   - "\u597D\u6606\u7279\uFF0C\u4E0D\u6253\u55CE?"
-  missioning: []
+  - "\u72D7\u52FE\u9A0E\u58EB\u53C8\u518D\u80E1\u9B27\u4E86\uFF0C\u8ACB\u4F60\u53BB\u6559\u8A13\u7260!"
+  missioning:
+  - "\u7260\u9084\u5728\u80E1\u9B27!\u5FEB\u53BB\u5427!"
   aftermission:
-  - 88!
-  countNeed: 0
-  stateNPCmission: 0
+  - "\u505A\u5F97\u597D!88!"
+  countNeed: 1
+  stateNPCmission: 1

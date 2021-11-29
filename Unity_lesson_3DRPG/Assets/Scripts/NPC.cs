@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Ker.Dialogue
 {
@@ -14,6 +15,8 @@ namespace Ker.Dialogue
         public float speedLookAt = 3;
         [Header("對話系統")]
         public DialogueSystem dialogueSystem;
+        [Header("完成任務事件")]
+        public UnityEvent onFinish;
 
         private int countCurrent;
         private Transform target;
@@ -25,11 +28,21 @@ namespace Ker.Dialogue
             Gizmos.DrawSphere(transform.position, checkPlayerRadius);
         }
 
+        private void Awake()
+        {
+            Initialize();
+        }
+
         private void Update()
         {
             goTip.SetActive(CheckPlayer());
             LookAtPlayer();
             StartDialogue();
+        }
+
+        private void Initialize()
+        {
+            datadialogue.stateNPCmission = StateNPCMission.BeforeMission;
         }
 
         private bool CheckPlayer()
@@ -51,6 +64,8 @@ namespace Ker.Dialogue
         {
             if(CheckPlayer() && startDialogueKey) {
                 dialogueSystem.Dialogue(datadialogue);
+
+                if (datadialogue.stateNPCmission == StateNPCMission.BeforeMission) datadialogue.stateNPCmission = StateNPCMission.Missioning;
             }
             else if(!CheckPlayer()) {
                 dialogueSystem.StopDialogue();
@@ -60,7 +75,11 @@ namespace Ker.Dialogue
         public void UpdateMissionCount()
         {
             countCurrent++;
-            if (countCurrent == datadialogue.countNeed) datadialogue.stateNPCmission = StateNPCMission.AfterMission;
+            if (countCurrent == datadialogue.countNeed) {
+                datadialogue.stateNPCmission = StateNPCMission.AfterMission;
+                onFinish.Invoke();
+            }
+
         }
     }
 }

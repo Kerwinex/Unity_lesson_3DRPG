@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Ker
 {
@@ -19,9 +20,14 @@ namespace Ker
         private Animator ani;
         private bool keyAttack { get => Input.GetKeyDown(KeyCode.Mouse0); }
 
-        [Header("攻擊動畫參數")]
+        [Header("攻擊與走路動畫參數")]
         public string parameterAttack = "攻擊圖層觸發";
-        private bool isAttack;       
+        public string parameterWalk = "走路開關";
+        private bool isAttack;
+        [Header("攻擊事件")]
+        public UnityEvent onAttack;
+        [Header("攻擊圖層遮色片")]
+        public AvatarMask maskAttack;
 
         private void OnDrawGizmos()
         {
@@ -47,9 +53,16 @@ namespace Ker
 
         private void Attack()
         {
+            bool isWalk = ani.GetBool(parameterWalk);
+            maskAttack.SetHumanoidBodyPartActive(AvatarMaskBodyPart.LeftLeg, !isWalk);
+            maskAttack.SetHumanoidBodyPartActive(AvatarMaskBodyPart.RightLeg, !isWalk);
+            maskAttack.SetHumanoidBodyPartActive(AvatarMaskBodyPart.LeftFootIK, !isWalk);
+            maskAttack.SetHumanoidBodyPartActive(AvatarMaskBodyPart.RightFootIK, !isWalk);
+            maskAttack.SetHumanoidBodyPartActive(AvatarMaskBodyPart.Root, !isWalk);
             if (keyAttack && !isAttack) {
                 isAttack = true;
                 ani.SetTrigger(parameterAttack);
+                onAttack.Invoke();
                 StartCoroutine(DelayHit());
             }
         }
